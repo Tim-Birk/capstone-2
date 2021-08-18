@@ -5,17 +5,17 @@ const useLocalStorage = (key, value = null) => {
     ? window.localStorage.getItem(key)
     : value;
 
-  const [token, setToken] = useState(initialVal);
+  const [theValue, setTheValue] = useState(initialVal);
 
   useEffect(() => {
-    if (token) {
-      localStorage.setItem(key, token);
+    if (theValue) {
+      localStorage.setItem(key, theValue);
     } else {
       localStorage.removeItem(key);
     }
-  }, [key, token]);
+  }, [key, theValue]);
 
-  return [token, setToken];
+  return [theValue, setTheValue];
 };
 
 export default useLocalStorage;

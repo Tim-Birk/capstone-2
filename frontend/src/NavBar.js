@@ -36,9 +36,9 @@ const NavBar = ({ logout }) => {
             <Nav className='mr-auto' navbar>
               {user ? (
                 <>
-                  <Link to='/'>
+                  <Link to='/player-stats'>
                     <NavItem>
-                      <NavLink>Stats</NavLink>
+                      <NavLink>Player Stats</NavLink>
                     </NavItem>
                   </Link>
                   <Link to='/'>

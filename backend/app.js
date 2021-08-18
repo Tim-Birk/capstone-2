@@ -9,12 +9,14 @@ const app = express();
 
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
+const playerRoutes = require('./routes/players');
 
 app.use(cors());
 app.use(express.json());
 app.use(authenticateJWT);
 app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
+app.use('/players', playerRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {

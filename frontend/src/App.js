@@ -7,6 +7,7 @@ import Profile from './Profile';
 import SignupForm from './SignupForm';
 import Spinner from './Spinner';
 import NavBar from './NavBar';
+import PlayerStatsPage from './PlayerStatsPage';
 import UsersApi from './api/UsersApi';
 import UserContext from './UserContext';
 import jwt from 'jsonwebtoken';
@@ -134,6 +135,9 @@ function App() {
                 </Route>
                 <Route exact path='/login-sucess'>
                   <h1>Login Success!!!</h1>
+                </Route>
+                <Route exact path='/player-stats'>
+                  <PlayerStatsPage />
                 </Route>
                 <Route exact path='/profile'>
                   <Profile updateUser={updateUser} error={errorMessage} />
