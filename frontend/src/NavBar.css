@@ -1,0 +1,15 @@
+.navbar-collapse {
+  justify-content: flex-end;
+}
+
+.navbar-nav a {
+  text-decoration: none;
+}
+
+.active {
+  font-weight: 500;
+}
+
+.nav-link {
+  cursor: pointer;
+}
