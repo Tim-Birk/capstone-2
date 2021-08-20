@@ -14,12 +14,14 @@ const PlayerStatsPage = () => {
   const history = useHistory();
 
   async function getPlayers() {
-    if (!playerList) {
-      let allPlayers = await PlayersApi.getTeams();
-      setPlayerList(JSON.stringify(allPlayers));
-      setPlayers(allPlayers);
-    } else {
-      setPlayers(JSON.parse(playerList));
+    if (user) {
+      if (!playerList) {
+        let allPlayers = await PlayersApi.getPlayers();
+        setPlayerList(JSON.stringify(allPlayers));
+        setPlayers(allPlayers);
+      } else {
+        setPlayers(JSON.parse(playerList));
+      }
     }
     setIsLoading(false);
   }

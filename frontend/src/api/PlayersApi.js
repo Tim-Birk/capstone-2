@@ -21,12 +21,12 @@ class PlayersApi {
     }
   }
 
-  static async getTeams() {
+  static async getTeams() {}
+
+  static async getPlayers() {
     let res = await this.request(`players`);
     return res;
   }
-
-  static async getPlayers() {}
 }
 
 export default PlayersApi;
