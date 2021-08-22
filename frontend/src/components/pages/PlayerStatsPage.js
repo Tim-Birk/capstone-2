@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import PlayersContext from '../../contexts/PlayersContext';
 import UserContext from '../../contexts/UserContext';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { Container, Nav, NavItem, NavLink } from 'reactstrap';
@@ -17,6 +18,7 @@ const PlayerStatsPage = () => {
   const [tablePlayers, setTablePlayers] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
   const { user } = useContext(UserContext);
+  const { playerMap } = useContext(PlayersContext);
   const history = useHistory();
 
   const toggle = (tab) => {
@@ -25,18 +27,19 @@ const PlayerStatsPage = () => {
 
   async function getPlayers() {
     setTableColumns(getTableColumns(activeTab));
-    if (user) {
-      if (!playerList) {
-        let allPlayers = await PlayersApi.getPlayers();
-        setPlayerList(JSON.stringify(allPlayers));
-        setPlayers(allPlayers);
-        setTablePlayers(getTableData(allPlayers, activeTab));
-      } else {
-        const allPlayers = JSON.parse(playerList);
-        setPlayers(allPlayers);
-        setTablePlayers(getTableData(allPlayers, activeTab));
-      }
-    }
+    setTablePlayers(getTableData(playerMap, activeTab));
+    // if (user) {
+    //   if (!playerList) {
+    //     let allPlayers = await PlayersApi.getPlayers();
+    //     setPlayerList(JSON.stringify(allPlayers));
+    //     setPlayers(allPlayers);
+    //     setTablePlayers(getTableData(allPlayers, activeTab));
+    //   } else {
+    //     const allPlayers = JSON.parse(playerList);
+    //     setPlayers(allPlayers);
+    //     setTablePlayers(getTableData(allPlayers, activeTab));
+    //   }
+    // }
     setIsLoading(false);
   }
 
@@ -47,7 +50,7 @@ const PlayerStatsPage = () => {
 
     // Load companies from database and set global state for each array
     getPlayers();
-  }, [user, history, activeTab]);
+  }, [activeTab]);
 
   if (isLoading) return <Spinner />;
 

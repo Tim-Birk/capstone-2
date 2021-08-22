@@ -3,7 +3,11 @@ import _ from 'lodash';
 const COLUMNS = {
   QB: [
     { title: 'Rank', field: 'rank' },
-    { title: 'Player', field: 'player' },
+    {
+      title: 'Player',
+      field: 'player',
+      render: (rowData) => <a href='#'>{rowData.player}</a>,
+    },
     { title: 'GP', field: 'gamesPlayed' },
     //   { title: 'CMP', field: 'completions' },
     { title: 'ATT', field: 'passingAttempts' },
@@ -20,7 +24,11 @@ const COLUMNS = {
   ],
   RB: [
     { title: 'Rank', field: 'rank' },
-    { title: 'Player', field: 'player' },
+    {
+      title: 'Player',
+      field: 'player',
+      render: (rowData) => <a href='#'>{rowData.player}</a>,
+    },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'ATT', field: 'rushingAttempts' },
     { title: 'RUSH YDS', field: 'rushingYards' },
@@ -32,7 +40,11 @@ const COLUMNS = {
   ],
   WR: [
     { title: 'Rank', field: 'rank' },
-    { title: 'Player', field: 'player' },
+    {
+      title: 'Player',
+      field: 'player',
+      render: (rowData) => <a href='#'>{rowData.player}</a>,
+    },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'REC', field: 'receptions' },
     { title: 'REC YDS', field: 'receivingYards' },
@@ -44,7 +56,11 @@ const COLUMNS = {
   ],
   TE: [
     { title: 'Rank', field: 'rank' },
-    { title: 'Player', field: 'player' },
+    {
+      title: 'Player',
+      field: 'player',
+      render: (rowData) => <a href='#'>{rowData.player}</a>,
+    },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'REC', field: 'receptions' },
     { title: 'REC YDS', field: 'receivingYards' },

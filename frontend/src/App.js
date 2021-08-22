@@ -8,14 +8,18 @@ import SignupForm from './components/user/SignupForm';
 import Spinner from './components/common/Spinner';
 import NavBar from './components/common/NavBar';
 import PlayerStatsPage from './components/pages/PlayerStatsPage';
+import PlayersApi from './api/PlayersApi';
 import UsersApi from './api/UsersApi';
 import UserContext from './contexts/UserContext';
+import PlayersContext from './contexts/PlayersContext';
 import jwt from 'jsonwebtoken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [playerList, setPlayerList] = useLocalStorage('playerList');
+  const [playerMap, setPlayerMap] = useState(null);
   const [token, setToken] = useLocalStorage('tokenKey');
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -41,7 +45,30 @@ function App() {
         // No token so explicitly set user to null here
         setUser(null);
       }
+      await getPlayerMap();
       setIsLoading(false);
+    }
+
+    async function getPlayerMap() {
+      if (token) {
+        try {
+          if (!playerList) {
+            let allPlayers = await PlayersApi.getPlayers();
+            setPlayerList(JSON.stringify(allPlayers));
+            setPlayerMap(allPlayers);
+          } else {
+            const allPlayers = JSON.parse(playerList);
+
+            setPlayerMap(allPlayers);
+          }
+        } catch (err) {
+          console.error(err.message);
+          setPlayerMap(null);
+        }
+      } else {
+        // No token so explicitly set playerMap to null here
+        setPlayerMap(null);
+      }
     }
     setIsLoading(true);
     getUser();
@@ -136,9 +163,6 @@ function App() {
                 <Route exact path='/login-sucess'>
                   <h1>Login Success!!!</h1>
                 </Route>
-                <Route exact path='/player-stats'>
-                  <PlayerStatsPage />
-                </Route>
                 <Route exact path='/profile'>
                   <Profile updateUser={updateUser} error={errorMessage} />
                 </Route>
@@ -148,6 +172,11 @@ function App() {
                 <Route path='/signup'>
                   <SignupForm addUser={addUser} error={errorMessage} />
                 </Route>
+                <PlayersContext.Provider value={{ playerMap }}>
+                  <Route exact path='/player-stats'>
+                    <PlayerStatsPage />
+                  </Route>
+                </PlayersContext.Provider>
                 <Route>
                   <div>Not Found Component</div>
                 </Route>
