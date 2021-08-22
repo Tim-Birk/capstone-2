@@ -1,12 +1,14 @@
 import { useState, useContext, useEffect } from 'react';
-import UserContext from './UserContext';
+import UserContext from '../../contexts/UserContext';
 import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ loginUser, error }) => {
-  const intialState = {
-    username: '',
+const Profile = ({ updateUser, error }) => {
+  let intialState = {
     password: '',
+    firstName: '',
+    lastName: '',
+    email: '',
   };
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(intialState);
@@ -14,9 +16,19 @@ const LoginForm = ({ loginUser, error }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (user) {
-      history.push('/');
+    if (!user) {
+      history.push('/login');
     }
+
+    // Set formData
+    intialState = {
+      password: '',
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+    };
+
+    setFormData(intialState);
   }, [user, history]);
 
   const handleChange = (evt) => {
@@ -31,10 +43,11 @@ const LoginForm = ({ loginUser, error }) => {
     evt.preventDefault();
     try {
       setIsLoading(true);
-      await loginUser(formData);
+      const updateSuccess = await updateUser(formData);
       setIsLoading(false);
-      setFormData(intialState);
-      history.push('/login-sucess');
+      if (updateSuccess) {
+        history.push('/');
+      }
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -42,20 +55,45 @@ const LoginForm = ({ loginUser, error }) => {
   };
   return (
     <div className='col-md-4 m-auto'>
-      <h2 className='mt-3'>Login</h2>
+      <h2 className='mt-3'>Sign Up</h2>
       <Form className='search-form mt-2' onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor='username'>Username</Label>
+          <p>{user ? user.username : ''}</p>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor='firstName'>First Name</Label>
           <Input
-            id='username'
-            name='username'
+            id='firstName'
+            name='firstName'
             required
-            value={formData.username}
+            value={formData.firstName}
             onChange={handleChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor='password'>Password</Label>
+          <Label htmlFor='lastName'>Last Name</Label>
+          <Input
+            id='lastName'
+            name='lastName'
+            required
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor='email'>Email</Label>
+          <Input
+            id='email'
+            name='email'
+            type='email'
+            required
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor='password'>Confirm password to make changes:</Label>
           <Input
             id='password'
             name='password'
@@ -72,11 +110,11 @@ const LoginForm = ({ loginUser, error }) => {
         ) : null}
 
         <Button className='mt-2' disabled={isLoading} color='primary'>
-          Login
+          Save Changes
         </Button>
       </Form>
     </div>
   );
 };
 
-export default LoginForm;
+export default Profile;

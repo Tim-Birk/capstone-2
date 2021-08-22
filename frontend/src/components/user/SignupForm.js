@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
-import UserContext from './UserContext';
+import UserContext from '../../contexts/UserContext';
 import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
-const Profile = ({ updateUser, error }) => {
-  let intialState = {
+const SignupForm = ({ addUser, error }) => {
+  const intialState = {
+    username: '',
     password: '',
     firstName: '',
     lastName: '',
@@ -16,19 +17,9 @@ const Profile = ({ updateUser, error }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!user) {
-      history.push('/login');
+    if (user) {
+      history.push('/');
     }
-
-    // Set formData
-    intialState = {
-      password: '',
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      email: user?.email,
-    };
-
-    setFormData(intialState);
   }, [user, history]);
 
   const handleChange = (evt) => {
@@ -43,10 +34,11 @@ const Profile = ({ updateUser, error }) => {
     evt.preventDefault();
     try {
       setIsLoading(true);
-      const updateSuccess = await updateUser(formData);
+      await addUser(formData);
       setIsLoading(false);
-      if (updateSuccess) {
-        history.push('/');
+      if (user) {
+        setFormData(intialState);
+        history.push('/login-sucess');
       }
     } catch (e) {
       alert(e);
@@ -59,7 +51,24 @@ const Profile = ({ updateUser, error }) => {
       <Form className='search-form mt-2' onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor='username'>Username</Label>
-          <p>{user ? user.username : ''}</p>
+          <Input
+            id='username'
+            name='username'
+            required
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor='password'>Password</Label>
+          <Input
+            id='password'
+            name='password'
+            type='password'
+            required
+            value={formData.password}
+            onChange={handleChange}
+          />
         </FormGroup>
         <FormGroup>
           <Label htmlFor='firstName'>First Name</Label>
@@ -92,29 +101,18 @@ const Profile = ({ updateUser, error }) => {
             onChange={handleChange}
           />
         </FormGroup>
-        <FormGroup>
-          <Label htmlFor='password'>Confirm password to make changes:</Label>
-          <Input
-            id='password'
-            name='password'
-            type='password'
-            required
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </FormGroup>
-        {error && error.type === 'login' ? (
+        {error && error.type === 'signup' ? (
           <Alert className='mt-2' color='danger'>
             {error.message}
           </Alert>
         ) : null}
 
         <Button className='mt-2' disabled={isLoading} color='primary'>
-          Save Changes
+          Sign Up
         </Button>
       </Form>
     </div>
   );
 };
 
-export default Profile;
+export default SignupForm;

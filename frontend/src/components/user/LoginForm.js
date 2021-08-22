@@ -1,15 +1,12 @@
 import { useState, useContext, useEffect } from 'react';
-import UserContext from './UserContext';
+import UserContext from '../../contexts/UserContext';
 import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
-const SignupForm = ({ addUser, error }) => {
+const LoginForm = ({ loginUser, error }) => {
   const intialState = {
     username: '',
     password: '',
-    firstName: '',
-    lastName: '',
-    email: '',
   };
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(intialState);
@@ -34,12 +31,10 @@ const SignupForm = ({ addUser, error }) => {
     evt.preventDefault();
     try {
       setIsLoading(true);
-      await addUser(formData);
+      await loginUser(formData);
       setIsLoading(false);
-      if (user) {
-        setFormData(intialState);
-        history.push('/login-sucess');
-      }
+      setFormData(intialState);
+      history.push('/login-sucess');
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -47,7 +42,7 @@ const SignupForm = ({ addUser, error }) => {
   };
   return (
     <div className='col-md-4 m-auto'>
-      <h2 className='mt-3'>Sign Up</h2>
+      <h2 className='mt-3'>Login</h2>
       <Form className='search-form mt-2' onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor='username'>Username</Label>
@@ -70,49 +65,18 @@ const SignupForm = ({ addUser, error }) => {
             onChange={handleChange}
           />
         </FormGroup>
-        <FormGroup>
-          <Label htmlFor='firstName'>First Name</Label>
-          <Input
-            id='firstName'
-            name='firstName'
-            required
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor='lastName'>Last Name</Label>
-          <Input
-            id='lastName'
-            name='lastName'
-            required
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor='email'>Email</Label>
-          <Input
-            id='email'
-            name='email'
-            type='email'
-            required
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </FormGroup>
-        {error && error.type === 'signup' ? (
+        {error && error.type === 'login' ? (
           <Alert className='mt-2' color='danger'>
             {error.message}
           </Alert>
         ) : null}
 
         <Button className='mt-2' disabled={isLoading} color='primary'>
-          Sign Up
+          Login
         </Button>
       </Form>
     </div>
   );
 };
 
-export default SignupForm;
+export default LoginForm;
