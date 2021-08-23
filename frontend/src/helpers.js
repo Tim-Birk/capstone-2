@@ -1,4 +1,3 @@
-import MenuItem from '@material-ui/core/MenuItem';
 import _ from 'lodash';
 
 const BASE_YEAR = new Date().getFullYear() - 1;
@@ -80,10 +79,6 @@ const COLUMNS = {
     { title: 'RUSH TD', field: 'rushingTouchdowns' },
     { title: 'FUM', field: 'receivingFumbles' },
   ],
-};
-
-const getTableColumns = (position) => {
-  return COLUMNS[position];
 };
 
 const getTableData = (allPlayers, position, year = BASE_YEAR) => {
@@ -260,8 +255,7 @@ const getTableData = (allPlayers, position, year = BASE_YEAR) => {
       rank: idx + 1,
     })
   );
-  console.log(arrPlayersSorted);
   return arrPlayersSorted;
 };
 
-export { getTableColumns, getTableData, POSITIONS };
+export { COLUMNS, getTableData, POSITIONS };

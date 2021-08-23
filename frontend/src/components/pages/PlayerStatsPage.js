@@ -1,40 +1,66 @@
 import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import PlayersContext from '../../contexts/PlayersContext';
 import UserContext from '../../contexts/UserContext';
-import { Container, Nav, NavItem, NavLink } from 'reactstrap';
+import {
+  Container,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+} from 'reactstrap';
 import MaterialTable from 'material-table';
 import Spinner from '../common/Spinner';
 import classnames from 'classnames';
-import { getTableColumns, getTableData, POSITIONS } from '../../helpers';
+import { COLUMNS, getTableData, POSITIONS } from '../../helpers';
 
 const PlayerStatsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('QB');
-  const [tablePlayers, setTablePlayers] = useState([]);
-  const [tableColumns, setTableColumns] = useState([]);
+  const [positionMap, setPositionMap] = useLocalStorage('positionMap');
+  const [quarterbacks, setQuarterbacks] = useState([]);
+  const [runningBacks, setRunningBacks] = useState([]);
+  const [wideReceivers, setWideReceivers] = useState([]);
+  const [tightEnds, setTightEnds] = useState([]);
   const { user } = useContext(UserContext);
   const { playerMap } = useContext(PlayersContext);
   const history = useHistory();
 
-  const toggle = (tab) => {
+  const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
-  async function getPlayers() {
-    setTableColumns(getTableColumns(activeTab));
-    setTablePlayers(getTableData(playerMap, activeTab));
-
-    setIsLoading(false);
-  }
 
   useEffect(() => {
     if (!user) {
       history.push('/login');
     }
 
-    getPlayers();
-  }, [activeTab]);
+    async function fillTableData() {
+      let qbs, rbs, wrs, tes;
+      if (!positionMap) {
+        qbs = getTableData(playerMap, 'QB');
+        rbs = getTableData(playerMap, 'RB');
+        wrs = getTableData(playerMap, 'WR');
+        tes = getTableData(playerMap, 'TE');
+        setPositionMap(JSON.stringify({ QB: qbs, RB: rbs, WR: wrs, TE: tes }));
+      } else {
+        qbs = JSON.parse(positionMap)['QB'];
+        rbs = JSON.parse(positionMap)['RB'];
+        wrs = JSON.parse(positionMap)['WR'];
+        tes = JSON.parse(positionMap)['TE'];
+      }
+      setQuarterbacks(qbs);
+      setRunningBacks(rbs);
+      setWideReceivers(wrs);
+      setTightEnds(tes);
+
+      setIsLoading(false);
+    }
+
+    fillTableData();
+  }, [history, playerMap, positionMap, setPositionMap, user]);
 
   if (isLoading) return <Spinner />;
 
@@ -45,7 +71,7 @@ const PlayerStatsPage = () => {
           <NavLink
             className={classnames({ active: activeTab === 'QB' })}
             onClick={() => {
-              toggle('QB');
+              toggleTab('QB');
             }}
           >
             QB
@@ -55,7 +81,7 @@ const PlayerStatsPage = () => {
           <NavLink
             className={classnames({ active: activeTab === 'RB' })}
             onClick={() => {
-              toggle('RB');
+              toggleTab('RB');
             }}
           >
             RB
@@ -65,7 +91,7 @@ const PlayerStatsPage = () => {
           <NavLink
             className={classnames({ active: activeTab === 'WR' })}
             onClick={() => {
-              toggle('WR');
+              toggleTab('WR');
             }}
           >
             WR
@@ -75,21 +101,55 @@ const PlayerStatsPage = () => {
           <NavLink
             className={classnames({ active: activeTab === 'TE' })}
             onClick={() => {
-              toggle('TE');
+              toggleTab('TE');
             }}
           >
             TE
           </NavLink>
         </NavItem>
       </Nav>
-      <MaterialTable
-        columns={tableColumns}
-        data={tablePlayers}
-        title={POSITIONS[activeTab]}
-        options={{
-          pageSize: 10,
-        }}
-      />
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId='QB'>
+          <MaterialTable
+            columns={COLUMNS['QB']}
+            data={quarterbacks}
+            title={POSITIONS['QB']}
+            options={{
+              pageSize: 10,
+            }}
+          />
+        </TabPane>
+        <TabPane tabId='RB'>
+          <MaterialTable
+            columns={COLUMNS['RB']}
+            data={runningBacks}
+            title={POSITIONS['RB']}
+            options={{
+              pageSize: 10,
+            }}
+          />
+        </TabPane>
+        <TabPane tabId='WR'>
+          <MaterialTable
+            columns={COLUMNS['WR']}
+            data={wideReceivers}
+            title={POSITIONS['WR']}
+            options={{
+              pageSize: 10,
+            }}
+          />
+        </TabPane>
+        <TabPane tabId='TE'>
+          <MaterialTable
+            columns={COLUMNS['TE']}
+            data={tightEnds}
+            title={POSITIONS['TE']}
+            options={{
+              pageSize: 10,
+            }}
+          />
+        </TabPane>
+      </TabContent>
     </Container>
   );
 };
