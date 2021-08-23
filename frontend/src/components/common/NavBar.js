@@ -41,7 +41,7 @@ const NavBar = ({ logout }) => {
                       <NavLink>Player Stats</NavLink>
                     </NavItem>
                   </Link>
-                  <Link to='/'>
+                  <Link to='/my-rankings'>
                     <NavItem>
                       <NavLink>My Rankings</NavLink>
                     </NavItem>

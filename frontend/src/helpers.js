@@ -1,3 +1,4 @@
+import MenuItem from '@material-ui/core/MenuItem';
 import _ from 'lodash';
 
 const COLUMNS = {
@@ -254,4 +255,16 @@ const getTableData = (allPlayers, position, year = 2020) => {
   return arrPlayersSorted;
 };
 
-export { getTableColumns, getTableData };
+const getSeasonOptions = () => {
+  let startYear = new Date().getFullYear() - 1;
+  let stopYear = startYear - 4;
+  const seasonOptions = [];
+
+  while (startYear >= stopYear) {
+    seasonOptions.push(<MenuItem value={startYear}>{startYear}</MenuItem>);
+    startYear--;
+  }
+  return seasonOptions;
+};
+
+export { getTableColumns, getTableData, getSeasonOptions };

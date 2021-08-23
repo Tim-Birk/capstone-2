@@ -2,24 +2,41 @@ import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PlayersContext from '../../contexts/PlayersContext';
 import UserContext from '../../contexts/UserContext';
-import useLocalStorage from '../../hooks/useLocalStorage';
 import { Container, Nav, NavItem, NavLink } from 'reactstrap';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import MaterialTable from 'material-table';
-import PlayersApi from '../../api/PlayersApi';
 import Spinner from '../common/Spinner';
 import classnames from 'classnames';
-import { getTableColumns, getTableData } from '../../helpers';
+import { getTableColumns, getTableData, getSeasonOptions } from '../../helpers';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    paddingTop: 10,
+  },
+  input: {
+    height: 40,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const PlayerStatsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [playerList, setPlayerList] = useLocalStorage('playerList');
-  const [players, setPlayers] = useState();
+  const [season, setSeason] = useState(new Date().getFullYear() - 1);
   const [activeTab, setActiveTab] = useState('QB');
   const [tablePlayers, setTablePlayers] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
   const { user } = useContext(UserContext);
   const { playerMap } = useContext(PlayersContext);
   const history = useHistory();
+  const classes = useStyles();
+
+  const handleChange = (event) => {
+    setSeason(event.target.value);
+  };
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -27,19 +44,8 @@ const PlayerStatsPage = () => {
 
   async function getPlayers() {
     setTableColumns(getTableColumns(activeTab));
-    setTablePlayers(getTableData(playerMap, activeTab));
-    // if (user) {
-    //   if (!playerList) {
-    //     let allPlayers = await PlayersApi.getPlayers();
-    //     setPlayerList(JSON.stringify(allPlayers));
-    //     setPlayers(allPlayers);
-    //     setTablePlayers(getTableData(allPlayers, activeTab));
-    //   } else {
-    //     const allPlayers = JSON.parse(playerList);
-    //     setPlayers(allPlayers);
-    //     setTablePlayers(getTableData(allPlayers, activeTab));
-    //   }
-    // }
+    setTablePlayers(getTableData(playerMap, activeTab, season));
+
     setIsLoading(false);
   }
 
@@ -48,15 +54,26 @@ const PlayerStatsPage = () => {
       history.push('/login');
     }
 
-    // Load companies from database and set global state for each array
     getPlayers();
-  }, [activeTab]);
+  }, [activeTab, season]);
+
+  const seasonOptions = getSeasonOptions();
 
   if (isLoading) return <Spinner />;
 
   return (
-    <Container className='mt-1'>
-      <Nav tabs>
+    <Container className='mt-1' className={classes.formControl}>
+      <FormControl variant='outlined'>
+        <Select
+          value={season}
+          onChange={handleChange}
+          label='Season'
+          className={classes.input}
+        >
+          {seasonOptions}
+        </Select>
+      </FormControl>
+      <Nav tabs className='mt-1'>
         <NavItem>
           <NavLink
             className={classnames({ active: activeTab === 'QB' })}

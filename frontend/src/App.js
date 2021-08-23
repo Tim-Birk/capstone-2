@@ -176,6 +176,9 @@ function App() {
                   <Route exact path='/player-stats'>
                     <PlayerStatsPage />
                   </Route>
+                  <Route exact path='/my-rankings'>
+                    <h1>My rankings</h1>
+                  </Route>
                 </PlayersContext.Provider>
                 <Route>
                   <div>Not Found Component</div>
