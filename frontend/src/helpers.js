@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 const BASE_YEAR = new Date().getFullYear() - 1;
@@ -15,7 +16,9 @@ const COLUMNS = {
     {
       title: 'Player',
       field: 'player',
-      render: (rowData) => <a href='#'>{rowData.player}</a>,
+      render: (rowData) => (
+        <Link to={`/players/quarterbacks/${rowData.id}`}>{rowData.player}</Link>
+      ),
     },
     { title: 'GP', field: 'gamesPlayed' },
     //   { title: 'CMP', field: 'completions' },
@@ -36,7 +39,9 @@ const COLUMNS = {
     {
       title: 'Player',
       field: 'player',
-      render: (rowData) => <a href='#'>{rowData.player}</a>,
+      render: (rowData) => (
+        <Link to={`/players/runningBacks/${rowData.id}`}>{rowData.player}</Link>
+      ),
     },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'ATT', field: 'rushingAttempts' },
@@ -52,7 +57,11 @@ const COLUMNS = {
     {
       title: 'Player',
       field: 'player',
-      render: (rowData) => <a href='#'>{rowData.player}</a>,
+      render: (rowData) => (
+        <Link to={`/players/wideReceivers/${rowData.id}`}>
+          {rowData.player}
+        </Link>
+      ),
     },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'REC', field: 'receptions' },
@@ -68,7 +77,9 @@ const COLUMNS = {
     {
       title: 'Player',
       field: 'player',
-      render: (rowData) => <a href='#'>{rowData.player}</a>,
+      render: (rowData) => (
+        <Link to={`/players/tightEnds/${rowData.id}`}>{rowData.player}</Link>
+      ),
     },
     { title: 'GP', field: 'gamesPlayed' },
     { title: 'REC', field: 'receptions' },
@@ -86,6 +97,7 @@ const getTableData = (allPlayers, position, year = BASE_YEAR) => {
   if (position === 'QB') {
     for (const [key, player] of Object.entries(allPlayers.quarterbacks)) {
       const tablePlayer = {
+        id: player.id,
         player: `${player.displayName} - ${player.currentTeam.abbreviation}`,
         overallRanking: Number(player.overallRanking),
       };
@@ -146,6 +158,7 @@ const getTableData = (allPlayers, position, year = BASE_YEAR) => {
   } else if (position === 'RB') {
     for (const [key, player] of Object.entries(allPlayers.runningBacks)) {
       const tablePlayer = {
+        id: player.id,
         player: `${player.displayName} - ${player.currentTeam.abbreviation}`,
         overallRanking: Number(player.overallRanking),
       };
@@ -199,6 +212,7 @@ const getTableData = (allPlayers, position, year = BASE_YEAR) => {
       position === 'WR' ? allPlayers.wideReceivers : allPlayers.tightEnds
     )) {
       const tablePlayer = {
+        id: player.id,
         player: `${player.displayName} - ${player.currentTeam.abbreviation}`,
         overallRanking: Number(player.overallRanking),
       };

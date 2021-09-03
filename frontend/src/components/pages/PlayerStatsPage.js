@@ -20,10 +20,10 @@ const PlayerStatsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('QB');
   const [positionMap, setPositionMap] = useLocalStorage('positionMap');
-  const [quarterbacks, setQuarterbacks] = useState([]);
-  const [runningBacks, setRunningBacks] = useState([]);
-  const [wideReceivers, setWideReceivers] = useState([]);
-  const [tightEnds, setTightEnds] = useState([]);
+  // const [quarterbacks, setQuarterbacks] = useState([]);
+  // const [runningBacks, setRunningBacks] = useState([]);
+  // const [wideReceivers, setWideReceivers] = useState([]);
+  // const [tightEnds, setTightEnds] = useState([]);
   const { user } = useContext(UserContext);
   const { playerMap } = useContext(PlayersContext);
   const history = useHistory();
@@ -38,23 +38,23 @@ const PlayerStatsPage = () => {
     }
 
     async function fillTableData() {
-      let qbs, rbs, wrs, tes;
+      // let qbs, rbs, wrs, tes;
       if (!positionMap) {
-        qbs = getTableData(playerMap, 'QB');
-        rbs = getTableData(playerMap, 'RB');
-        wrs = getTableData(playerMap, 'WR');
-        tes = getTableData(playerMap, 'TE');
+        const qbs = getTableData(playerMap, 'QB');
+        const rbs = getTableData(playerMap, 'RB');
+        const wrs = getTableData(playerMap, 'WR');
+        const tes = getTableData(playerMap, 'TE');
         setPositionMap(JSON.stringify({ QB: qbs, RB: rbs, WR: wrs, TE: tes }));
       } else {
-        qbs = JSON.parse(positionMap)['QB'];
-        rbs = JSON.parse(positionMap)['RB'];
-        wrs = JSON.parse(positionMap)['WR'];
-        tes = JSON.parse(positionMap)['TE'];
+        // qbs = JSON.parse(positionMap)['QB'];
+        // rbs = JSON.parse(positionMap)['RB'];
+        // wrs = JSON.parse(positionMap)['WR'];
+        // tes = JSON.parse(positionMap)['TE'];
       }
-      setQuarterbacks(qbs);
-      setRunningBacks(rbs);
-      setWideReceivers(wrs);
-      setTightEnds(tes);
+      // setQuarterbacks(qbs);
+      // setRunningBacks(rbs);
+      // setWideReceivers(wrs);
+      // setTightEnds(tes);
 
       setIsLoading(false);
     }
@@ -112,7 +112,7 @@ const PlayerStatsPage = () => {
         <TabPane tabId='QB'>
           <MaterialTable
             columns={COLUMNS['QB']}
-            data={quarterbacks}
+            data={JSON.parse(positionMap)['QB']}
             title={POSITIONS['QB']}
             options={{
               pageSize: 10,
@@ -122,7 +122,7 @@ const PlayerStatsPage = () => {
         <TabPane tabId='RB'>
           <MaterialTable
             columns={COLUMNS['RB']}
-            data={runningBacks}
+            data={JSON.parse(positionMap)['RB']}
             title={POSITIONS['RB']}
             options={{
               pageSize: 10,
@@ -132,7 +132,7 @@ const PlayerStatsPage = () => {
         <TabPane tabId='WR'>
           <MaterialTable
             columns={COLUMNS['WR']}
-            data={wideReceivers}
+            data={JSON.parse(positionMap)['WR']}
             title={POSITIONS['WR']}
             options={{
               pageSize: 10,
@@ -142,7 +142,7 @@ const PlayerStatsPage = () => {
         <TabPane tabId='TE'>
           <MaterialTable
             columns={COLUMNS['TE']}
-            data={tightEnds}
+            data={JSON.parse(positionMap)['TE']}
             title={POSITIONS['TE']}
             options={{
               pageSize: 10,

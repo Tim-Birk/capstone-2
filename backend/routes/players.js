@@ -61,10 +61,10 @@ const getTop200List = async () => {
  * Gets list of fantasy relevant players with career stats info
  * @returns
  *   {
- *     quarterbacks: {playerKey: {playerProfileInfo..., playerStatInfo...},
- *     runningbacks: {playerKey: {playerProfileInfo..., playerStatInfo...},
- *     wideReceivers: {playerKey: {playerProfileInfo..., playerStatInfo...},
- *     tightEnds: {playerKey: {playerProfileInfo..., playerStatInfo...},
+ *     quarterbacks: {playerId: {playerProfileInfo..., playerStatInfo...},
+ *     runningbacks: {playerId: {playerProfileInfo..., playerStatInfo...},
+ *     wideReceivers: {playerId: {playerProfileInfo..., playerStatInfo...},
+ *     tightEnds: {playerId: {playerProfileInfo..., playerStatInfo...},
  *   }
  */
 router.get('/', async function (req, res, next) {
@@ -84,7 +84,15 @@ router.get('/', async function (req, res, next) {
     for (let i = 0; i < teamList.length; i++) {
       const { team } = teamList[i];
       // Get team info to add to each player
-      const { name, displayName: teamDisplayName, abbreviation } = team;
+      const {
+        name,
+        displayName: teamDisplayName,
+        abbreviation,
+        shortDisplayName,
+        color,
+        alternateColor,
+        logos,
+      } = team;
       // Get full player list for each team from sportsdataverse api
       const respRoster = await sdv.nfl.getTeamPlayers(team.id);
 
@@ -126,8 +134,16 @@ router.get('/', async function (req, res, next) {
             active,
             draft,
           } = athlete;
-          const playerKey = fullName + '__' + jersey;
-          const currentTeam = { name, teamDisplayName, abbreviation };
+          const playerId = id;
+          const currentTeam = {
+            name,
+            shortDisplayName,
+            teamDisplayName,
+            abbreviation,
+            color,
+            alternateColor,
+            logo: logos.length > 0 ? logos[0] : null,
+          };
 
           let player = {
             id,
@@ -178,16 +194,16 @@ router.get('/', async function (req, res, next) {
 
           switch (position) {
             case 'Quarterback':
-              quarterbacks[playerKey] = player;
+              quarterbacks[playerId] = player;
               break;
             case 'Wide Receiver':
-              wideReceivers[playerKey] = player;
+              wideReceivers[playerId] = player;
               break;
             case 'Running Back':
-              runningBacks[playerKey] = player;
+              runningBacks[playerId] = player;
               break;
             case 'Tight End':
-              tightEnds[playerKey] = player;
+              tightEnds[playerId] = player;
               break;
           }
         }

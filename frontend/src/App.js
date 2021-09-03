@@ -14,6 +14,7 @@ import UserContext from './contexts/UserContext';
 import PlayersContext from './contexts/PlayersContext';
 import jwt from 'jsonwebtoken';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PlayerDetailPage from './components/pages/PlayerDetailPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +73,7 @@ function App() {
     }
     setIsLoading(true);
     getUser();
-  }, [token]);
+  }, [token, playerList, setPlayerList]);
 
   const addUser = async (newUser) => {
     try {
@@ -175,6 +176,9 @@ function App() {
                 <PlayersContext.Provider value={{ playerMap }}>
                   <Route exact path='/player-stats'>
                     <PlayerStatsPage />
+                  </Route>
+                  <Route path='/players/:position/:id'>
+                    <PlayerDetailPage />
                   </Route>
                   <Route exact path='/my-rankings'>
                     <h1>My rankings</h1>
