@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import PlayersContext from '../../contexts/PlayersContext';
+import { connect } from 'react-redux';
 import UserContext from '../../contexts/UserContext';
+
 import {
   Container,
   Nav,
@@ -16,16 +16,11 @@ import Spinner from '../common/Spinner';
 import classnames from 'classnames';
 import { COLUMNS, getTableData, POSITIONS } from '../../helpers';
 
-const PlayerStatsPage = () => {
+const PlayerStatsPage = ({ getAllPlayers }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('QB');
-  const [positionMap, setPositionMap] = useLocalStorage('positionMap');
-  // const [quarterbacks, setQuarterbacks] = useState([]);
-  // const [runningBacks, setRunningBacks] = useState([]);
-  // const [wideReceivers, setWideReceivers] = useState([]);
-  // const [tightEnds, setTightEnds] = useState([]);
+  const [positionMap, setPositionMap] = useState();
   const { user } = useContext(UserContext);
-  const { playerMap } = useContext(PlayersContext);
   const history = useHistory();
 
   const toggleTab = (tab) => {
@@ -38,29 +33,23 @@ const PlayerStatsPage = () => {
     }
 
     async function fillTableData() {
-      // let qbs, rbs, wrs, tes;
       if (!positionMap) {
-        const qbs = getTableData(playerMap, 'QB');
-        const rbs = getTableData(playerMap, 'RB');
-        const wrs = getTableData(playerMap, 'WR');
-        const tes = getTableData(playerMap, 'TE');
-        setPositionMap(JSON.stringify({ QB: qbs, RB: rbs, WR: wrs, TE: tes }));
-      } else {
-        // qbs = JSON.parse(positionMap)['QB'];
-        // rbs = JSON.parse(positionMap)['RB'];
-        // wrs = JSON.parse(positionMap)['WR'];
-        // tes = JSON.parse(positionMap)['TE'];
+        const playerMap = getAllPlayers();
+        setPositionMap(
+          JSON.stringify({
+            QB: getTableData(playerMap, 'QB'),
+            RB: getTableData(playerMap, 'RB'),
+            WR: getTableData(playerMap, 'WR'),
+            TE: getTableData(playerMap, 'TE'),
+          })
+        );
       }
-      // setQuarterbacks(qbs);
-      // setRunningBacks(rbs);
-      // setWideReceivers(wrs);
-      // setTightEnds(tes);
 
       setIsLoading(false);
     }
 
     fillTableData();
-  }, [history, playerMap, positionMap, setPositionMap, user]);
+  }, [user]);
 
   if (isLoading) return <Spinner />;
 
@@ -154,4 +143,8 @@ const PlayerStatsPage = () => {
   );
 };
 
-export default PlayerStatsPage;
+const mapDispatch = (dispatch) => ({
+  getAllPlayers: () => dispatch.players.players,
+});
+
+export default connect(mapDispatch)(PlayerStatsPage);

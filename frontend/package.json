@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
+    "@rematch/core": "^2.1.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -14,6 +15,7 @@
     "material-table": "^1.69.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "reactstrap": "^8.9.0",

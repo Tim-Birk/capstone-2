@@ -138,7 +138,6 @@ const getTableData = (allPlayers, position, year = BASE_YEAR) => {
             break;
           }
         }
-        console.log(player.displayName, passingStats, rushingStats);
       } else {
         tablePlayer.gamesPlayed = 0;
         tablePlayer.completions = 0;
