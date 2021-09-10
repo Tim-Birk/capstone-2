@@ -16,7 +16,7 @@ import Spinner from '../common/Spinner';
 import classnames from 'classnames';
 import { COLUMNS, getTableData, POSITIONS } from '../../helpers';
 
-const PlayerStatsPage = ({ getAllPlayers }) => {
+const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('QB');
   const [positionMap, setPositionMap] = useState();
@@ -33,8 +33,9 @@ const PlayerStatsPage = ({ getAllPlayers }) => {
     }
 
     async function fillTableData() {
-      if (!positionMap) {
-        const playerMap = getAllPlayers();
+      if (!allPlayers.players) {
+        await getAllPlayers();
+        const playerMap = allPlayers.players;
         setPositionMap(
           JSON.stringify({
             QB: getTableData(playerMap, 'QB'),
@@ -144,7 +145,11 @@ const PlayerStatsPage = ({ getAllPlayers }) => {
 };
 
 const mapDispatch = (dispatch) => ({
-  getAllPlayers: () => dispatch.players.players,
+  getAllPlayers: dispatch.players.setPlayersAsync,
 });
 
-export default connect(mapDispatch)(PlayerStatsPage);
+const mapState = (state) => ({
+  allPlayers: state.players,
+});
+
+export default connect(mapState, mapDispatch)(PlayerStatsPage);

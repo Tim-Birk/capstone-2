@@ -3,12 +3,13 @@ import playerMap from '../data';
 
 export const players = {
   state: {
-    players: playerMap,
+    players: null, //make null and check any where if null then make the api call
   }, // initial state
   reducers: {
     // handle state changes with pure functions
     setPlayers(state, payload) {
-      return { ...payload };
+      console.log(payload);
+      return { ...state, players: payload };
     },
   },
   effects: (dispatch) => ({
@@ -16,7 +17,7 @@ export const players = {
     // use async/await for async actions
     async setPlayersAsync(payload, rootState) {
       const allPlayers = await PlayersApi.getPlayers();
-      dispatch.players.setPlayers(allPlayers);
+      this.setPlayers(allPlayers);
     },
   }),
 };
