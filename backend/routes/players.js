@@ -23,7 +23,7 @@ const FANTASY_POSITIONS = new Set([
  */
 const getTop200List = async () => {
   return axios(
-    'https://www.cbssports.com/fantasy/football/rankings/standard/top200/'
+    'https://www.cbssports.com/fantasy/football/rankings/standard/top200/yearly/'
   )
     .then((response) => {
       const top200List = {};
@@ -191,7 +191,7 @@ router.get('/', async function (req, res, next) {
               console.log(`No stats available for ${displayName}`);
             }
           }
-
+          console.log(player);
           switch (position) {
             case 'Quarterback':
               quarterbacks[playerId] = player;
