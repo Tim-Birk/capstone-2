@@ -28,9 +28,9 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
   };
 
   useEffect(() => {
-    if (!user) {
-      history.push('/login');
-    }
+    // if (!user) {
+    //   history.push('/login');
+    // }
 
     async function fillTableData() {
       if (!allPlayers.players) {

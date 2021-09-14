@@ -12,9 +12,9 @@ const PlayerDetailPage = ({ getAllPlayers }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!user) {
-      history.push('/login');
-    }
+    // if (!user) {
+    //   history.push('/login');
+    // }
     const allPlayers = getAllPlayers();
     setPlayer(allPlayers[position][id]);
   }, [player]);

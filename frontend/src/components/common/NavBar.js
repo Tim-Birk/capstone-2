@@ -34,43 +34,26 @@ const NavBar = ({ logout }) => {
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className='mr-auto' navbar>
-              {user ? (
-                <>
-                  <Link to='/player-stats'>
-                    <NavItem>
-                      <NavLink>Player Stats</NavLink>
-                    </NavItem>
-                  </Link>
-                  <Link to='/my-rankings'>
-                    <NavItem>
-                      <NavLink>My Rankings</NavLink>
-                    </NavItem>
-                  </Link>
-                  <Link to='/profile'>
-                    <NavItem>
-                      <NavLink>Profile</NavLink>
-                    </NavItem>
-                  </Link>
+              <>
+                <Link to='/player-stats'>
                   <NavItem>
-                    <NavLink onClick={handleLogout}>
-                      Logout {user.username}
-                    </NavLink>
+                    <NavLink>Player Stats</NavLink>
                   </NavItem>
-                </>
-              ) : (
-                <>
-                  <Link to='/login'>
-                    <NavItem>
-                      <NavLink>Login</NavLink>
-                    </NavItem>
-                  </Link>
-                  <Link to='/signup'>
-                    <NavItem>
-                      <NavLink>Sign Up</NavLink>
-                    </NavItem>
-                  </Link>
-                </>
-              )}
+                </Link>
+                <Link to='/my-rankings'>
+                  <NavItem>
+                    <NavLink>My Rankings</NavLink>
+                  </NavItem>
+                </Link>
+                <Link to='/profile'>
+                  <NavItem>
+                    <NavLink>Profile</NavLink>
+                  </NavItem>
+                </Link>
+                <NavItem>
+                  <NavLink onClick={handleLogout}>Logout</NavLink>
+                </NavItem>
+              </>
             </Nav>
           </Collapse>
         </Container>
