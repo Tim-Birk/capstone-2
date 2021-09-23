@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import UserContext from '../../contexts/UserContext';
+import { useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import UserContext from "../../contexts/UserContext";
 
 import {
   Container,
@@ -10,15 +10,15 @@ import {
   NavLink,
   TabContent,
   TabPane,
-} from 'reactstrap';
-import MaterialTable from 'material-table';
-import Spinner from '../common/Spinner';
-import classnames from 'classnames';
-import { COLUMNS, getTableData, POSITIONS } from '../../helpers';
+} from "reactstrap";
+import MaterialTable from "material-table";
+import Spinner from "../common/Spinner";
+import classnames from "classnames";
+import { COLUMNS, getTableData, POSITIONS } from "../../helpers";
 
-const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
+const PlayerStatsPage = ({ players, getAllPlayers }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('QB');
+  const [activeTab, setActiveTab] = useState("QB");
   const [positionMap, setPositionMap] = useState();
   const { user } = useContext(UserContext);
   const history = useHistory();
@@ -32,36 +32,41 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
     //   history.push('/login');
     // }
 
-    async function fillTableData() {
-      if (!allPlayers.players) {
-        await getAllPlayers();
-        const playerMap = allPlayers.players;
-        setPositionMap(
-          JSON.stringify({
-            QB: getTableData(playerMap, 'QB'),
-            RB: getTableData(playerMap, 'RB'),
-            WR: getTableData(playerMap, 'WR'),
-            TE: getTableData(playerMap, 'TE'),
-          })
-        );
-      }
-
+    // async function fillTableData() {
+    if (players === null) {
+      setIsLoading(true);
+      getAllPlayers();
+      console.log("POSITION MAP . . . .", positionMap);
+    } else {
+      console.log(players);
+      // if (positionMap === undefined) {
+      setPositionMap(
+        JSON.stringify({
+          QB: getTableData(players, "QB"),
+          RB: getTableData(players, "RB"),
+          WR: getTableData(players, "WR"),
+          TE: getTableData(players, "TE"),
+        })
+      );
+      // }
       setIsLoading(false);
     }
 
-    fillTableData();
-  }, [user]);
+    // }
+
+    // fillTableData();
+  }, [players]);
 
   if (isLoading) return <Spinner />;
 
   return (
-    <Container className='mt-1'>
-      <Nav tabs className='mt-1'>
+    <Container className="mt-1">
+      <Nav tabs className="mt-1">
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === 'QB' })}
+            className={classnames({ active: activeTab === "QB" })}
             onClick={() => {
-              toggleTab('QB');
+              toggleTab("QB");
             }}
           >
             QB
@@ -69,9 +74,9 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === 'RB' })}
+            className={classnames({ active: activeTab === "RB" })}
             onClick={() => {
-              toggleTab('RB');
+              toggleTab("RB");
             }}
           >
             RB
@@ -79,9 +84,9 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === 'WR' })}
+            className={classnames({ active: activeTab === "WR" })}
             onClick={() => {
-              toggleTab('WR');
+              toggleTab("WR");
             }}
           >
             WR
@@ -89,9 +94,9 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === 'TE' })}
+            className={classnames({ active: activeTab === "TE" })}
             onClick={() => {
-              toggleTab('TE');
+              toggleTab("TE");
             }}
           >
             TE
@@ -99,41 +104,41 @@ const PlayerStatsPage = ({ allPlayers, getAllPlayers }) => {
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        <TabPane tabId='QB'>
+        <TabPane tabId="QB">
           <MaterialTable
-            columns={COLUMNS['QB']}
-            data={JSON.parse(positionMap)['QB']}
-            title={POSITIONS['QB']}
+            columns={COLUMNS["QB"]}
+            data={JSON.parse(positionMap)["QB"]}
+            title={POSITIONS["QB"]}
             options={{
               pageSize: 10,
             }}
           />
         </TabPane>
-        <TabPane tabId='RB'>
+        <TabPane tabId="RB">
           <MaterialTable
-            columns={COLUMNS['RB']}
-            data={JSON.parse(positionMap)['RB']}
-            title={POSITIONS['RB']}
+            columns={COLUMNS["RB"]}
+            data={JSON.parse(positionMap)["RB"]}
+            title={POSITIONS["RB"]}
             options={{
               pageSize: 10,
             }}
           />
         </TabPane>
-        <TabPane tabId='WR'>
+        <TabPane tabId="WR">
           <MaterialTable
-            columns={COLUMNS['WR']}
-            data={JSON.parse(positionMap)['WR']}
-            title={POSITIONS['WR']}
+            columns={COLUMNS["WR"]}
+            data={JSON.parse(positionMap)["WR"]}
+            title={POSITIONS["WR"]}
             options={{
               pageSize: 10,
             }}
           />
         </TabPane>
-        <TabPane tabId='TE'>
+        <TabPane tabId="TE">
           <MaterialTable
-            columns={COLUMNS['TE']}
-            data={JSON.parse(positionMap)['TE']}
-            title={POSITIONS['TE']}
+            columns={COLUMNS["TE"]}
+            data={JSON.parse(positionMap)["TE"]}
+            title={POSITIONS["TE"]}
             options={{
               pageSize: 10,
             }}
@@ -149,7 +154,7 @@ const mapDispatch = (dispatch) => ({
 });
 
 const mapState = (state) => ({
-  allPlayers: state.players,
+  players: state.players.players,
 });
 
 export default connect(mapState, mapDispatch)(PlayerStatsPage);
