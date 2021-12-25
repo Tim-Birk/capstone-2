@@ -1,0 +1,19 @@
+.history-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.table-title {
+  padding-left: 0;
+  font-weight: lighter;
+  color: #b7b7b7;
+}
+.history-container table {
+  min-width: 676px;
+}
+
+.history-container table thead tr td {
+  font-weight: bold;
+}

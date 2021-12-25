@@ -1,0 +1,34 @@
+.cheat-sheet-container {
+  background: #fff;
+  width: 8.5in;
+  height: 10.5in;
+  padding: 0.5in;
+  font-size: 1em;
+  margin-bottom: 0.5in;
+}
+
+.cheat-sheet-title {
+  text-align: left;
+}
+
+.cheat-sheet-subtitle {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.position-title {
+  text-align: left;
+  text-decoration: underline;
+  margin-left: -1em;
+}
+
+.position-list {
+  padding-left: 1em;
+}
+
+.cheat-sheet-content {
+  column-count: 4;
+  height: 100%;
+  column-fill: auto;
+  line-height: 1.75;
+}

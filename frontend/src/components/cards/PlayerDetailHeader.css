@@ -1,0 +1,28 @@
+.top-container {
+  background-color: #fff;
+  padding: 0px 10px;
+  border-radius: 6px;
+}
+
+.detail-headshot {
+  max-width: 200px;
+  max-height: 1500px;
+  margin: 0 auto;
+  border-radius: 40px;
+}
+
+.detail-team-logo {
+  width: 30px;
+}
+
+.detail > ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .detail > h3,
+  ul {
+    text-align: left;
+  }
+}

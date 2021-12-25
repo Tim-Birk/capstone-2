@@ -1,0 +1,11 @@
+.metric-container .row div:nth-child(1) {
+  border-right: 1px solid #c1c1c1;
+}
+
+.stat {
+  font-size: 1.5rem;
+}
+
+.stat-greater {
+  color: rgb(3, 134, 3);
+}

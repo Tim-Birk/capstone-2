@@ -1,0 +1,31 @@
+.top-container {
+  background-color: #fff;
+  padding: 20px 10px;
+  border-radius: 6px;
+}
+.compare-container {
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+}
+.name-info {
+  display: flex;
+  flex-direction: column;
+}
+
+img.compare-headshot {
+  max-width: 200px;
+  max-height: 1500px;
+  margin: 0 auto;
+  border-radius: 40px;
+}
+
+.compare-team-logo {
+  width: 30px;
+}
+
+.compare > ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
