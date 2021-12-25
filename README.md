@@ -1,3 +1,39 @@
+## Fantasy Football Assistant
+
+[View Application](https://fantasy-football-assistant.surge.sh/)
+
+Generate your own rankings cheat sheet based on player versus player comparisons. Analyze and compare players based on historical data and current trends.
+
+## Login and create a new rankings list
+
+1. Sign up for an account:
+
+![Sign up](/screenshots/signup.PNG)
+
+2. Navigate to the 'My Rankings' page and clicke 'New':
+
+![My Rankings](/screenshots/myrankings.PNG)
+
+3. Set up a new rankings list:
+
+![Set up new list](/screenshots/setupnewlist.PNG)
+
+4. For each position, make your picks until the rankings are complete for that position:
+
+![Make picks](/screenshots/makepicks.PNG)
+
+5. Will making picks, you can click 'Compare players' to help you decide based on historical data between the two players:
+
+![Compare players](/screenshots/compareplayers.PNG)
+
+6. Making picks will start to build out your 'Cheat sheet' which is your personalized rankings which you can bring to your draft!
+
+![Cheat sheet](/screenshots/cheatsheet.PNG)
+
+7. Print friendly cheat sheet:
+
+![Print cheat sheet](/screenshots/cheatprint.PNG)
+
 ## Run Locally
 
 Make sure [PostgreSQL](https://www.postgresql.org/) is installed. Then run the following commads in a git bash terminal:
@@ -57,3 +93,8 @@ $ npm start
 ```
 
 10. Sign up and create a user to view hidden tabs.
+
+## Technology Stack
+
+- Backend: NodeJs, Express, PostgreSQL
+- Frontend: React, HTML, CSS, Reactstrap (Bootstrap), MaterialUI
