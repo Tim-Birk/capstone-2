@@ -36,7 +36,7 @@ Generate your own rankings cheat sheet based on player versus player comparisons
 
 ## Rankings Algorithm
 
-In order to prevent the user from having to make every single player comparison manually, there is a recursive algorithm that minimizes the number of choices that need to be made by making implied comparisons. More information on how that algorithm works can be found [here](https://docs.google.com/presentation/d/1y3bGtFFVYjsNVEyokFUPeJaxHPs3nknTxUhKI3VdDyY/edit?usp=sharing).
+In order to prevent the user from having to make every single player comparison manually, there is a recursive algorithm that minimizes the number of choices that need to be made by using implied comparisons. More information on how that algorithm works can be found [here](https://docs.google.com/presentation/d/1y3bGtFFVYjsNVEyokFUPeJaxHPs3nknTxUhKI3VdDyY/edit?usp=sharing).
 
 ## Run Locally
 
