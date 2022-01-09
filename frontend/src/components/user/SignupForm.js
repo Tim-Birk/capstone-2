@@ -34,7 +34,10 @@ const SignupForm = ({ addUser, error }) => {
     evt.preventDefault();
     try {
       setIsLoading(true);
-      await addUser(formData);
+      await addUser({
+        ...formData,
+        email: formData.email.toLowerCase(),
+      });
       setIsLoading(false);
       if (user) {
         setFormData(intialState);
