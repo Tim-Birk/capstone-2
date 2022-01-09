@@ -34,65 +34,72 @@ const PlayerRankingsTab = ({
         {name}: {POSITIONS[position].name}
       </h3>
       <Row>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <>
-            {!isComplete && (
-              <Col md={8}>
-                <Row className='players-container mt-3'>
-                  <Col className='player-container' xs={6}>
-                    <PlayerRankingsTabCard player={playerA} />
-                    <Button
-                      className='pick-button'
-                      color='primary'
-                      onClick={handlePlayerAPick}
-                    >
-                      Pick
-                    </Button>
-                  </Col>
-                  <Col className='player-container' xs={6}>
-                    <PlayerRankingsTabCard player={playerB} />
-                    <Button
-                      className='pick-button text-center'
-                      color='primary'
-                      onClick={handlePlayerBPick}
-                    >
-                      Pick
-                    </Button>
-                  </Col>
-                </Row>
-                <div className=' text-center'>
-                  <Button
-                    className='mt-5 pick-button'
-                    color='info'
-                    onClick={() => setModal(true)}
-                  >
-                    Compare players
-                  </Button>
-                </div>
-              </Col>
-            )}
-            <Col md={isComplete ? 12 : 4}>
-              <div className={`mt-5 d-flex flex-column align-items-center`}>
-                <h5>
-                  Results{' '}
-                  {isComplete ? (
-                    <span className='text-success'>(complete)</span>
+        <>
+          {!isComplete && (
+            <Col md={8}>
+              <Row className='players-container mt-3'>
+                <Col className='player-container' xs={6}>
+                  {loading ? (
+                    <Spinner />
                   ) : (
-                    <span className='text-danger'>(in-progress)</span>
+                    <PlayerRankingsTabCard player={playerA} />
                   )}
-                  :
-                </h5>
-                <ol>
-                  {positionResults.map((result) => (
-                    <li>{result.player_name}</li>
-                  ))}
-                </ol>
+                  <Button
+                    className='pick-button'
+                    color='primary'
+                    onClick={handlePlayerAPick}
+                    disabled={loading}
+                  >
+                    Pick
+                  </Button>
+                </Col>
+                <Col className='player-container' xs={6}>
+                  {loading ? (
+                    <Spinner />
+                  ) : (
+                    <PlayerRankingsTabCard player={playerB} />
+                  )}
+                  <Button
+                    className='pick-button text-center'
+                    color='primary'
+                    onClick={handlePlayerBPick}
+                    disabled={loading}
+                  >
+                    Pick
+                  </Button>
+                </Col>
+              </Row>
+              <div className=' text-center'>
+                <Button
+                  className='mt-5 pick-button'
+                  color='info'
+                  onClick={() => setModal(true)}
+                  disabled={loading}
+                >
+                  Compare players
+                </Button>
               </div>
             </Col>
-          </>
-        )}
+          )}
+          <Col md={isComplete ? 12 : 4}>
+            <div className={`mt-5 d-flex flex-column align-items-center`}>
+              <h5>
+                Results{' '}
+                {isComplete ? (
+                  <span className='text-success'>(complete)</span>
+                ) : (
+                  <span className='text-danger'>(in-progress)</span>
+                )}
+                :
+              </h5>
+              <ol>
+                {positionResults.map((result) => (
+                  <li>{result.player_name}</li>
+                ))}
+              </ol>
+            </div>
+          </Col>
+        </>
       </Row>
     </div>
   );
