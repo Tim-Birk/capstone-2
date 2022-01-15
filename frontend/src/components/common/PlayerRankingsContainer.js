@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
+
 import {
   POSITIONS,
   getAvailablePlayerMap,
@@ -25,6 +26,7 @@ const PlayerRankingsContainer = ({
 }) => {
   const [activeTab, setActiveTab] = useState('QB');
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
   const [activeList, setActiveList] = useState({
     QB: {
       playerA: null,
@@ -75,13 +77,6 @@ const PlayerRankingsContainer = ({
   const [modal, setModal] = React.useState(false);
 
   useEffect(async () => {
-    // TODOs:
-    // Database:
-    // - Position complete flag (to not show two players to compare)
-    // Props
-    // - isNewList Boolean (to know if we should do things like autorank)
-    // - Don't want to hard code first two players at each position
-
     // Get all players that will be available to the user based on list setup
     const availablePlayersMap = getAvailablePlayerMap(tableData, listSetup);
     setAvailablePlayers(availablePlayersMap);
@@ -89,7 +84,7 @@ const PlayerRankingsContainer = ({
     // Set position specific default state
     const list = { ...activeList };
 
-    // Set the first two players to be compared at the position (TODO:  if list not complete)
+    // Set the first two players to be compared at the position
     for (const position in POSITIONS) {
       const positionLimit = listSetup[`num_${position.toLowerCase()}s`];
       const positionResults = await RankingsApi.getListPositionRankingResults(
@@ -136,6 +131,13 @@ const PlayerRankingsContainer = ({
   };
 
   const autoRankPlayers = async (availablePlayersMap) => {
+    const progressMax =
+      availablePlayersMap.QB?.length +
+      availablePlayersMap.RB?.length +
+      availablePlayersMap.WR?.length +
+      availablePlayersMap.TE?.length;
+    let currentCount = 0;
+
     for (const position in POSITIONS) {
       const availablePlayers = availablePlayersMap[position];
       for (let i = 0; i < availablePlayers.length; i++) {
@@ -154,6 +156,9 @@ const PlayerRankingsContainer = ({
           //automatically add winning
           await handleChoice(higherRankedPlayer, lowerRankedPlayer, position);
         }
+        currentCount++;
+        const newProgress = Math.ceil((currentCount * 100) / progressMax);
+        setProgress(newProgress);
       }
     }
   };
@@ -414,6 +419,7 @@ const PlayerRankingsContainer = ({
             name={listSetup.name}
             position={position}
             loading={loading}
+            progress={progress}
           />
         </TabPane>
       );
