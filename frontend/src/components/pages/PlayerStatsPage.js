@@ -16,7 +16,7 @@ import Spinner from '../common/Spinner';
 import classnames from 'classnames';
 import PlayerStatsTable from '../common/PlayerStatsTable';
 
-const PlayerStatsPage = ({ tableData, getAllPlayers }) => {
+const PlayerStatsPage = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('QB');
   const [errorMsg, setErrorMsg] = useState(null);
@@ -32,15 +32,9 @@ const PlayerStatsPage = ({ tableData, getAllPlayers }) => {
     if (!user) {
       history.push('/login');
     }
-
-    if (tableData === null) {
-      getAllPlayers(setIsLoading);
-    } else {
-      setIsLoading(false);
-    }
   }, [tableData, activeTab, user]);
 
-  if (isLoading) return <Spinner />;
+  // if (isLoading) return <Spinner />;
 
   return (
     <Container className='mt-2'>

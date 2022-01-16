@@ -6,13 +6,14 @@ import PlayersApi from '../api/PlayersApi';
 import RankingsApi from '../api/RankingsApi';
 // import playerMap from '../data';
 
+const INITIAL_STATE = {
+  players: null, //make null and check any where if null then make the api call
+  tableData: null,
+  compareIds: [],
+  rankingsLists: null,
+};
 export const players = {
-  state: {
-    players: null, //make null and check any where if null then make the api call
-    tableData: null,
-    compareIds: [],
-    rankingsLists: null,
-  }, // initial state
+  state: INITIAL_STATE,
   reducers: {
     // handle state changes with pure functions
     setPlayers(state, payload) {
@@ -33,6 +34,9 @@ export const players = {
         TE: payload.arrTE,
       };
       return { ...state, tableData };
+    },
+    setInitialState() {
+      return { ...INITIAL_STATE };
     },
   },
   effects: {

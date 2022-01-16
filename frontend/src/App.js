@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import './App.css';
 import PlayerRankingsPage from './components/pages/PlayerRankingsPage';
 
-function App({ getRankingsLists }) {
+function App({ getRankingsLists, setInitialState, getAllPlayers }) {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useLocalStorage('tokenKey');
@@ -61,6 +61,8 @@ function App({ getRankingsLists }) {
       setToken(userToken);
       //clear previous errors
       setErrorMessage(null);
+
+      getAllPlayers(setIsLoading);
     } catch (e) {
       setToken(null);
       const msg = e[0]?.includes('email')
@@ -109,6 +111,8 @@ function App({ getRankingsLists }) {
       setToken(userToken);
       //clear previous errors
       setErrorMessage(null);
+
+      getAllPlayers(setIsLoading);
       // return true for successful login
       return true;
     } catch (e) {
@@ -124,6 +128,7 @@ function App({ getRankingsLists }) {
     try {
       setToken(null);
       getRankingsLists({ setIsLoading, userId: 0 });
+      setInitialState();
     } catch (e) {
       setToken(null);
       console.log('Logout user error:', e);
@@ -189,6 +194,8 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch) => ({
   getRankingsLists: dispatch.players.setRankingsListsAsync,
+  setInitialState: dispatch.players.setInitialState,
+  getAllPlayers: dispatch.players.setPlayersAsync,
 });
 
 export default connect(mapState, mapDispatch)(App);
