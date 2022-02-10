@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import UserContext from '../../contexts/UserContext';
 import ErrorAlert from '../common/ErrorAlert';
 import PlayerRankingsModal from '../common/PlayerRankingsModal';
-import PlayerRankingsContainer from '../common/PlayerRankingsContainer';
+import PlayerRankingsContainer from '../common/PlayerRankingsContainer2';
 import Moment from 'moment';
 import _ from 'lodash';
 

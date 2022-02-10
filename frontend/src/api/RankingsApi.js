@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { createComparison } from '../helpers';
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
-const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+// const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
 
 class RankingsApi {
   static async request(endpoint, data = {}, method = 'get') {
@@ -162,6 +162,37 @@ class RankingsApi {
       'post'
     );
     return res;
+  }
+
+  /** ************Player rankings lists****************** */
+
+  /** Add a new player lists. */
+
+  static async addPlayersList(list, list_id, user_id) {
+    let res = await this.request(
+      'playerlists',
+      { list, list_id, user_id },
+      'post'
+    );
+    return res.rankingPlayersList;
+  }
+
+  /** Delete an existing position for a list. */
+
+  static async deletePlayerRankingsListPosition(list_id, position) {
+    let res = await this.request(
+      `playerlists/${list_id}/${position}`,
+      {},
+      'delete'
+    );
+    return res;
+  }
+
+  /** Get rankings player list by list id. */
+
+  static async getPlayersListByListId(list_id) {
+    let res = await this.request(`playerlists/list/${list_id}`);
+    return res.rankingPlayersList;
   }
 }
 

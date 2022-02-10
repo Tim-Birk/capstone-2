@@ -15,10 +15,10 @@ import {
 const PlayerRankingsModal = (props) => {
   const intialState = {
     name: null,
-    num_qbs: 10,
-    num_rbs: 25,
-    num_wrs: 25,
-    num_tes: 10,
+    num_qbs: 20,
+    num_rbs: 50,
+    num_wrs: 50,
+    num_tes: 20,
   };
 
   const [isLoading, setIsLoading] = useState(false);

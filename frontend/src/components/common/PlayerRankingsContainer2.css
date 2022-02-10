@@ -1,0 +1,31 @@
+.player-rankings-card {
+  background-color: #fff;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.player-rankings-avatar {
+  width: 42px;
+  height: 33px;
+  border-radius: 25%;
+}
+
+.player-rankings-team-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.compare-selected {
+  border: solid 2px #fea707;
+  background-color: #fff6e7;
+}
+
+.compare-msg {
+  margin-top: -17px;
+  margin-left: -10px;
+  background-color: #ebebeb;
+  color: #e39302;
+  display: table;
+  border-radius: 23px;
+}
