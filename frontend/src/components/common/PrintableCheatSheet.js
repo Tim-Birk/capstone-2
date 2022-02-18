@@ -17,7 +17,7 @@ class PrintableCheatSheet extends React.Component {
             return (
               <ol className='position-list'>
                 <h6 className='position-title'>{POSITIONS[position].name}</h6>
-                {activeList[position].positionResults.map((r) => (
+                {activeList[position].map((r) => (
                   <li>{r.player_name}</li>
                 ))}
               </ol>

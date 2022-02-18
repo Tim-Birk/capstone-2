@@ -8,6 +8,7 @@ import {
   POSITION_OFFSET,
   AUTO_RANK_THRESHHOLDS,
 } from '../../helpers';
+import { Button } from 'reactstrap';
 import RankingsApi from '../../api/RankingsApi';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerRankingsTab from './PlayerRankingsTab';
@@ -36,6 +37,7 @@ const PlayerRankingsContainer2 = ({
   const [availablePlayers, setAvailablePlayers] = useState({});
   const [isDragging, setIsDragging] = useState(false);
   const [modal, setModal] = useState(false);
+  const [cheatSheat, setCheatSheet] = useState(false);
 
   useEffect(async () => {
     // Get all players that will be available to the user based on list setup
@@ -85,6 +87,10 @@ const PlayerRankingsContainer2 = ({
       ...rankingLists,
       [position]: items,
     });
+  };
+
+  const showCheatSheet = () => {
+    setCheatSheet(true);
   };
 
   const handleMouseDown = (e) => {
@@ -143,7 +149,7 @@ const PlayerRankingsContainer2 = ({
                 className='col-md-6 col-lg-3'
                 onClick={handleMouseDown}
               >
-                <h4 className='mt-3 mb-2'>{position}</h4>
+                <h5 className='mt-2 mb-2'>{position}</h5>
                 {rankingLists[position].map((player, index) => {
                   return (
                     <Draggable
@@ -225,17 +231,35 @@ const PlayerRankingsContainer2 = ({
   };
 
   return (
-    <div className='row'>
-      {getPlayerLists()}
+    <>
+      {cheatSheat ? (
+        <CheatSheetTab
+          loading={loading}
+          list={listSetup}
+          activeList={rankingLists}
+        />
+      ) : (
+        <div className='row'>
+          <div className='d-flex align-items-center justify-content-between'>
+            <h4 className='pt-1'>{listSetup.name}</h4>
+            <div>
+              <Button color='info' size='sm' onClick={showCheatSheet}>
+                Cheat sheet
+              </Button>
+            </div>
+          </div>
+          {getPlayerLists()}
 
-      <PlayerCompareModal
-        modal={modal}
-        position={compareData.position}
-        players={[...compareData.players]}
-        setModal={setModal}
-        resetCompare={resetCompare}
-      />
-    </div>
+          <PlayerCompareModal
+            modal={modal}
+            position={compareData.position}
+            players={[...compareData.players]}
+            setModal={setModal}
+            resetCompare={resetCompare}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
