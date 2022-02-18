@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
-// const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
+// const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
 
 class PlayersApi {
   static async request(endpoint, data = {}, method = 'get') {
