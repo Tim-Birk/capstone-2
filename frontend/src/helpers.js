@@ -1,6 +1,8 @@
 import RankingsApi from './api/RankingsApi';
 import _ from 'lodash';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+// const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
 const BASE_YEAR = new Date().getFullYear() - 1;
 const MIN_YEAR = BASE_YEAR - 2;
 const MAX_YEAR = BASE_YEAR;
@@ -739,6 +741,7 @@ const closest = (el, selector) => {
 };
 
 export {
+  BASE_URL,
   AUTO_RANK_THRESHHOLDS,
   TABLE_COLUMNS,
   POSITIONS,

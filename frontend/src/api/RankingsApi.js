@@ -1,8 +1,5 @@
 import axios from 'axios';
-import { createComparison } from '../helpers';
-
-// const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
-const BASE_URL = 'https://fantasy-football-assistant.herokuapp.com';
+import { createComparison, BASE_URL } from '../helpers';
 
 class RankingsApi {
   static async request(endpoint, data = {}, method = 'get') {
