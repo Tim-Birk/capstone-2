@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  closest,
-  POSITIONS,
-  getAvailablePlayerMap,
-  doesComparisonExist,
-  POSITION_OFFSET,
-  AUTO_RANK_THRESHHOLDS,
-} from '../../helpers';
+import { closest, POSITIONS, getAvailablePlayerMap } from '../../helpers';
 import { Button } from 'reactstrap';
 import RankingsApi from '../../api/RankingsApi';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import PlayerRankingsTab from './PlayerRankingsTab';
 import PlayerCompareModal from './PlayerCompareModal';
 import CheatSheetTab from './CheatSheetTab';
+import { IconButton } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import _ from 'lodash';
-import { permutations } from 'mathjs';
 import './PlayerRankingsContainer2.css';
 
 const PlayerRankingsContainer2 = ({
@@ -78,10 +69,12 @@ const PlayerRankingsContainer2 = ({
     const [reorderedItem] = items.splice(source.index, 1);
     items.splice(destination.index, 0, reorderedItem);
 
-    // delete position for list
-    RankingsApi.deletePlayerRankingsListPosition(listSetup.id, position);
-    // add back position with new order
-    RankingsApi.addPlayersList({ [position]: items }, listSetup.id, user.id);
+    await RankingsApi.addPlayersList(
+      { [position]: items },
+      listSetup.id,
+      user.id,
+      position
+    );
 
     setRankingLists({
       ...rankingLists,
@@ -93,16 +86,9 @@ const PlayerRankingsContainer2 = ({
     setCheatSheet(true);
   };
 
-  const handleMouseDown = (e) => {
-    if (isDragging) {
-      return;
-    }
-    const playerId = closest(e.target, '.player-rankings-card')?.getAttribute(
-      'data-id'
-    );
-    const position = closest(e.target, '.player-rankings-card')?.getAttribute(
-      'data-position'
-    );
+  const handleCompareClick = (e) => {
+    const playerId = closest(e.target, 'button')?.getAttribute('data-id');
+    const position = closest(e.target, 'button')?.getAttribute('data-position');
 
     let playerIds = [...compareData.playerIds];
     let players = [...compareData.players];
@@ -147,7 +133,6 @@ const PlayerRankingsContainer2 = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className='col-md-6 col-lg-3'
-                onClick={handleMouseDown}
               >
                 <h5 className='mt-2 mb-2'>{position}</h5>
                 {rankingLists[position].map((player, index) => {
@@ -167,9 +152,6 @@ const PlayerRankingsContainer2 = ({
                               ? ' compare-selected mt-2'
                               : ' mt-1'
                           }`}
-                          data-id={player.player_id}
-                          data-position={player.position}
-                          title='Click to compare player or drag to change ranking.'
                         >
                           {compareData.playerIds.includes(player.player_id) ? (
                             <div className='compare-msg px-1 mb-1'>
@@ -180,37 +162,47 @@ const PlayerRankingsContainer2 = ({
                             </div>
                           ) : null}
                           <div className='d-flex align-items-end justify-content-between'>
-                            <div>
-                              <div className='d-flex align-items-end'>
-                                {index + 1}.{' '}
-                                <img
-                                  alt={
-                                    allPlayers[POSITIONS[position].redux][
-                                      Number(player.player_id)
-                                    ].headshot.alt
-                                  }
-                                  src={
-                                    allPlayers[POSITIONS[position].redux][
-                                      Number(player.player_id)
-                                    ].headshot.href
-                                  }
-                                  className='player-rankings-avatar mx-1 d-lg-none'
-                                />
-                                {player.player_name}
-                                <img
-                                  alt={
-                                    allPlayers[POSITIONS[position].redux][
-                                      Number(player.player_id)
-                                    ].currentTeam.abbreviation
-                                  }
-                                  src={
-                                    allPlayers[POSITIONS[position].redux][
-                                      Number(player.player_id)
-                                    ].currentTeam.logo.href
-                                  }
-                                  className='player-rankings-team-logo mx-1'
-                                />
-                              </div>
+                            <div className='d-flex align-items-end'>
+                              {index + 1}.{' '}
+                              <img
+                                alt={
+                                  allPlayers[POSITIONS[position].redux][
+                                    Number(player.player_id)
+                                  ].headshot.alt
+                                }
+                                src={
+                                  allPlayers[POSITIONS[position].redux][
+                                    Number(player.player_id)
+                                  ].headshot.href
+                                }
+                                className='player-rankings-avatar mx-1 d-lg-none'
+                              />
+                              {player.player_name}
+                              <img
+                                alt={
+                                  allPlayers[POSITIONS[position].redux][
+                                    Number(player.player_id)
+                                  ].currentTeam.abbreviation
+                                }
+                                src={
+                                  allPlayers[POSITIONS[position].redux][
+                                    Number(player.player_id)
+                                  ].currentTeam.logo.href
+                                }
+                                className='player-rankings-team-logo mx-1'
+                              />
+                            </div>
+                            <div className='compare-button-container'>
+                              <IconButton
+                                aria-label='delete'
+                                className='mb-1'
+                                onClick={handleCompareClick}
+                                data-id={player.player_id}
+                                data-position={player.position}
+                                title='Click to compare player or drag to change ranking.'
+                              >
+                                <CompareArrowsIcon />
+                              </IconButton>
                             </div>
                           </div>
                         </div>

@@ -165,10 +165,10 @@ class RankingsApi {
 
   /** Add a new player lists. */
 
-  static async addPlayersList(list, list_id, user_id) {
+  static async addPlayersList(list, list_id, user_id, positionDelete = false) {
     let res = await this.request(
       'playerlists',
-      { list, list_id, user_id },
+      { list, list_id, user_id, positionDelete },
       'post'
     );
     return res.rankingPlayersList;

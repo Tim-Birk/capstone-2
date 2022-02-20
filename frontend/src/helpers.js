@@ -495,7 +495,7 @@ const METRICS = {
     },
     {
       displayName: 'Receiving',
-      key: 'YDS',
+      key: 'TD',
       label: 'REC TD',
       type: 'alt',
       isRadar: true,

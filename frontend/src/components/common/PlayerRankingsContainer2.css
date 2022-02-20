@@ -29,3 +29,8 @@
   display: table;
   border-radius: 23px;
 }
+
+.compare-button-container {
+  margin-bottom: -13px;
+  margin-right: -7px;
+}

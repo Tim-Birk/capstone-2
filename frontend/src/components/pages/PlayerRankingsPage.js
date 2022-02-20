@@ -5,8 +5,11 @@ import UserContext from '../../contexts/UserContext';
 import ErrorAlert from '../common/ErrorAlert';
 import PlayerRankingsModal from '../common/PlayerRankingsModal';
 import PlayerRankingsContainer from '../common/PlayerRankingsContainer2';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
 import Moment from 'moment';
 import _ from 'lodash';
+import { closest } from '../../helpers';
 
 import {
   Button,
@@ -48,6 +51,15 @@ const PlayerRankingsPage = ({ rankingsLists, getUserRankingsLists }) => {
     setActiveListSetup(list);
   };
 
+  const handleDeleteList = async (e) => {
+    const listId = closest(e.target, 'button')?.getAttribute('data-id');
+    if (!listId) {
+      return;
+    }
+    await RankingsApi.deleteList(listId);
+    getUserRankingsLists({ setIsLoading, userId: user.id });
+  };
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -80,6 +92,14 @@ const PlayerRankingsPage = ({ rankingsLists, getUserRankingsLists }) => {
                     </a>
                     {'            '}
                     <i>{Moment(list.created_at).format('MM-DD-YYYY')}</i>
+                    <IconButton
+                      aria-label='delete'
+                      className='mb-1'
+                      onClick={handleDeleteList}
+                      data-id={list.id}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </li>
                 );
               })}
