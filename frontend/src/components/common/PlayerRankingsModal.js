@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Form,
   FormGroup,
@@ -23,6 +24,7 @@ const PlayerRankingsModal = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(intialState);
+  const history = useHistory();
   const {
     className,
     modal,
@@ -108,7 +110,7 @@ const PlayerRankingsModal = (props) => {
       setIsLoading(false);
       setFormData(intialState);
       toggle();
-      //   history.push('/login-sucess');
+      history.push(`/my-rankings/${newRankingsList.id}`);
     } catch (e) {
       alert(e);
       setIsLoading(false);

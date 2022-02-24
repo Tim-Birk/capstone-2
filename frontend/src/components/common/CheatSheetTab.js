@@ -92,14 +92,7 @@ const CheatSheetTab = ({ activeList, list, loading }) => {
                     <ol className='mx-auto mx-md-3'>
                       {activeList[position].map((player) => {
                         return (
-                          <li key={player.player_id}>
-                            <Link
-                              target='_blank'
-                              to={`/players/${POSITIONS[position].redux}/${player.player_id}`}
-                            >
-                              {player.player_name}
-                            </Link>
-                          </li>
+                          <li key={player.player_id}>{player.player_name}</li>
                         );
                       })}
                     </ol>

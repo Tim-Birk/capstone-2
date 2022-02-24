@@ -7,6 +7,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerCompareModal from './PlayerCompareModal';
 import CheatSheetTab from './CheatSheetTab';
 import { IconButton } from '@mui/material';
+import ProgressBar from './ProgressBar';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -43,7 +44,6 @@ const PlayerRankingsContainer2 = ({
         user.id
       );
       setRankingLists(playerLists);
-      console.log(playerLists);
 
       setLoading(false);
     } else {
@@ -69,7 +69,7 @@ const PlayerRankingsContainer2 = ({
     const [reorderedItem] = items.splice(source.index, 1);
     items.splice(destination.index, 0, reorderedItem);
 
-    await RankingsApi.addPlayersList(
+    RankingsApi.addPlayersList(
       { [position]: items },
       listSetup.id,
       user.id,
@@ -221,6 +221,14 @@ const PlayerRankingsContainer2 = ({
 
     return fullList;
   };
+
+  if (loading) {
+    return (
+      <div className='mt-5'>
+        <ProgressBar message='Loading rankings list...' />
+      </div>
+    );
+  }
 
   return (
     <>

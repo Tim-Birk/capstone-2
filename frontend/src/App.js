@@ -16,6 +16,7 @@ import PlayerDetailPage from './components/pages/PlayerDetailPage';
 import { connect } from 'react-redux';
 import './App.css';
 import PlayerRankingsPage from './components/pages/PlayerRankingsPage';
+import PlayerRankingsListsPage from './components/pages/PlayerRankingsListsPage';
 
 function App({ getRankingsLists, setInitialState, getAllPlayers }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -147,12 +148,12 @@ function App({ getRankingsLists, setInitialState, getAllPlayers }) {
               <Switch>
                 <Route exact path='/'>
                   <h1 className='mt-5 text-center'>
-                    Fantasy Football Rankings Assistant
+                    Fantasy Football Assistant
                   </h1>
                   <p className='mt-3 text-center'>
-                    Generate your own rankings cheat sheet based on player
-                    versus player comparisons. Analyze and compare players based
-                    on historical data and current trends.
+                    Analyze and compare players based on historical data and
+                    current trends. Create your own rankings cheat sheet for any
+                    fantasy football league.
                   </p>
                 </Route>
                 <Route exact path='/login-sucess'>
@@ -174,6 +175,9 @@ function App({ getRankingsLists, setInitialState, getAllPlayers }) {
                   <PlayerDetailPage />
                 </Route>
                 <Route exact path='/my-rankings'>
+                  <PlayerRankingsListsPage />
+                </Route>
+                <Route path='/my-rankings/:list_id'>
                   <PlayerRankingsPage />
                 </Route>
                 <Route>
